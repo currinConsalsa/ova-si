@@ -1,6 +1,6 @@
 # Prisma: universo del color y la composición (OVA)
 
-OVA hecho con **Nuxt 3 + Vue 3 (Composition API) + JavaScript**. Tema central: **componentes** reutilizables (`props`, `v-model`, `ref`/`reactive`, `computed`, eventos).
+OVA hecho con **Nuxt 3 + Vue 3 (Composition API) + JavaScript**. Tema central: **ova y los componentes ** reutilizables (`props`, `v-model`, `ref`/`reactive`, `computed`, eventos).
 
 ## Ejecutar
 ```bash
@@ -25,4 +25,4 @@ git branch -M main
 git remote add origin https://github.com/TU-USUARIO/prisma-ova.git
 git push -u origin main
 ```
-Pendiente: coloca los logos oficiales de la Universidad de Córdoba / LIMAV en `public/` y úsalos en `layouts/default.vue`.
+Pendiente: nada jijiji todo bien en`public/` y en `layouts/default.vue`.
