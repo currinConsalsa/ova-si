@@ -1,10 +1,10 @@
 <script setup>useHead({ title: 'Evaluación · Prisma' })</script>
-
 <template>
   <div>
-    <h1>¿Cómo saber si aprendiste?</h1>
-    <p>Primero responde el quiz con tiempo y puntos. Luego revisa tu propio proyecto con la rúbrica.</p>
+    <PageHead kicker="Evaluación" title="¿Cómo saber si aprendiste?" />
+    <p>Responde el quiz, califica tu proyecto con la rúbrica y revisa tu boletín. Cada envío guarda tu mejor nota.</p>
     <QuizEngine />
     <SelfRubric />
+    <GradeBoard />
   </div>
 </template>

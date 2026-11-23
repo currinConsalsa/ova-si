@@ -9,10 +9,13 @@ const targets = [
   { n: 'Kandinsky · amarillo', hex: '#f2c400' },
   { n: 'Monet · agua', hex: '#5f7f94' }
 ]
+const { set } = useGrades()
+const sent = ref(null)
 const ti = ref(0)
 const hex = computed(() => hsl2hex(h.value, s.value, l.value))
 const score = computed(() => similarity(hex.value, targets[ti.value].hex))
 const modes = { Análogos: [-30, 0, 30], Complementario: [0, 180], 'Compl. dividido': [0, 150, 210], Tríada: [0, 120, 240] }
+const send = () => { sent.value = +(score.value / 20).toFixed(1); set('color', sent.value) }
 const mode = ref('Tríada')
 const harmony = computed(() => modes[mode.value].map(o => hsl2hex((h.value + o + 360) % 360, s.value, l.value)))
 </script>
@@ -32,6 +35,7 @@ const harmony = computed(() => modes[mode.value].map(o => hsl2hex((h.value + o +
     <label>Saturación (S) {{ s }}%<input v-model.number="s" type="range" min="0" max="100"></label>
     <label>Luminosidad (L) {{ l }}%<input v-model.number="l" type="range" min="0" max="100"></label>
     <p><b>Similitud: {{ score }}%</b> {{ score >= 90 ? '¡Paleta reconstruida!' : score >= 60 ? 'Vas cerca.' : 'Sigue probando.' }}</p>
+    <button class="btn" style="margin:0 .75rem .5rem 0" @click="send">Enviar mezcla</button><b v-if="sent !== null" aria-live="polite">Nota obtenida: {{ sent }} / 5</b>
     <h3>Armonías de tu color</h3>
     <div class="row">
       <button v-for="(_, k) in modes" :key="k" class="opt" style="width:auto" :class="{ on: mode === k }" @click="mode = k">{{ k }}</button>

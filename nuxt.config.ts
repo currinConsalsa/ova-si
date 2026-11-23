@@ -1,6 +1,21 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-01-01',
   devtools: { enabled: false },
+  imports: {
+    imports: [
+      { name: 'modules', from: '~/composables/useOva' },
+      { name: 'useOva', from: '~/composables/useOva' },
+      { name: 'useGrades', from: '~/composables/useGrades' },
+      { name: 'contrast', from: '~/utils/pan' },
+      { name: 'dayKey', from: '~/utils/color' },
+      { name: 'hsl2hex', from: '~/utils/color' },
+      { name: 'MOODS', from: '~/utils/color' },
+      { name: 'rgb', from: '~/utils/color' },
+      { name: 'similarity', from: '~/utils/color' },
+      { name: 'WHEEL', from: '~/utils/color' },
+      { name: 'panAlt', from: '~/utils/pan' }
+    ]
+  },
   css: ['~/assets/css/main.css'],
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },

@@ -9,22 +9,23 @@ const Q = [
   { q: 'Una tríada armónica usa colores separados por…', o: ['30°', '180°', '120°'], a: 2, w: 'Tres colores equidistantes (120°) forman una tríada.' }
 ]
 const T = 20
-const st = reactive({ i: 0, sel: null, pts: 0, t: T, over: false, best: 0 })
+const { set } = useGrades()
+const st = reactive({ i: 0, sel: null, pts: 0, t: T, over: false, best: 0, ok: 0 })
 let timer
 const start = () => { clearInterval(timer); timer = setInterval(() => { if (--st.t <= 0) pick(-1) }, 1000) }
 const pick = k => {
   if (st.sel !== null) return
   st.sel = k; clearInterval(timer)
-  if (k === Q[st.i].a) st.pts += 100 + st.t * 5
+  if (k === Q[st.i].a) { st.pts += 100 + st.t * 5; st.ok++ }
 }
 const next = () => {
   if (st.i + 1 >= Q.length) {
-    st.over = true; st.best = Math.max(st.best, st.pts)
+    st.over = true; st.best = Math.max(st.best, st.pts); set('quiz', st.ok / Q.length * 5)
     localStorage.setItem('ova-best', st.best); return
   }
   st.i++; st.sel = null; st.t = T; start()
 }
-const reset = () => { Object.assign(st, { i: 0, sel: null, pts: 0, t: T, over: false }); start() }
+const reset = () => { Object.assign(st, { i: 0, sel: null, pts: 0, t: T, over: false, ok: 0 }); start() }
 onMounted(() => { st.best = +localStorage.getItem('ova-best') || 0; start() })
 onBeforeUnmount(() => clearInterval(timer))
 const cls = k => st.sel === null ? '' : k === Q[st.i].a ? 'ok' : k === st.sel ? 'no' : ''
@@ -40,11 +41,11 @@ const cls = k => st.sel === null ? '' : k === Q[st.i].a ? 'ok' : k === st.sel ? 
       <button v-for="(o, k) in Q[st.i].o" :key="o" class="opt" :class="cls(k)" :disabled="st.sel !== null" @click="pick(k)">{{ o }}</button>
       <template v-if="st.sel !== null">
         <p><b>{{ st.sel === Q[st.i].a ? '¡Correcto!' : st.sel === -1 ? 'Se acabó el tiempo.' : 'Casi.' }}</b> {{ Q[st.i].w }}</p>
-        <button class="btn" @click="next">{{ st.i + 1 >= Q.length ? 'Ver resultado' : 'Siguiente' }}</button>
+        <Panzon :name="st.sel === Q[st.i].a ? 'bostezo' : 'dormido'" :size="90" /><br><button class="btn" @click="next">{{ st.i + 1 >= Q.length ? 'Ver resultado' : 'Siguiente' }}</button>
       </template>
     </template>
     <template v-else>
-      <p><b>Resultado: {{ st.pts }} puntos</b> (máximo {{ Q.length * 200 }}). Mejor marca: {{ st.best }}.</p>
+      <p><b>Nota obtenida: {{ (st.ok / Q.length * 5).toFixed(1) }} / 5</b> · Aciertos: {{ st.ok }} de {{ Q.length }} · Puntos: {{ st.pts }} · Mejor marca: {{ st.best }}.</p>
       <button class="btn" @click="reset">Intentar de nuevo</button>
     </template>
   </section>
